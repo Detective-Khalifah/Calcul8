@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="types">Num type:
+        <item>Byter</item>
+        <item>Shorter</item>
+        <item>Inter</item>
+        <item>Longer</item>
+        <item>Floater</item>
+        <item>Doubler</item>
+    </string-array>
+</resources>

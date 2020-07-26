@@ -6,15 +6,39 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/et_feedback"
+    <LinearLayout
+        android:id="@+id/layer1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:clickable="false"
-        android:longClickable="false" />
+        android:layout_above="@+id/calc_pad"
+        android:layout_marginBottom="36dp"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textAlignment="center" />
+        <!--            android:textSize="?android:textAppearanceLarge"/>-->
+
+        <TextView
+            android:id="@+id/tv_expression"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:clickable="false"
+            android:longClickable="false"
+            android:padding="24dp" />
+        <!--        android:textSize="?android:textAppearanceMedium"-->
+    </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/calc_pad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

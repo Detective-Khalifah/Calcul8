@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import javax.script.ScriptEngineManager;
@@ -17,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
             buttonZero, buttonOne, buttonTwo, buttonThree, buttonFour, buttonFive,
             buttonSix, buttonSeven, buttonEight, buttonNine,
             buttonDecimal;
-    private static TextView tv_feedback;
+    private static TextView tvExpression, tvResult;
     private static StringBuilder equation = new StringBuilder();
 
     @Override
@@ -25,7 +27,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tv_feedback = (TextView) findViewById(R.id.et_feedback);
+        tvExpression = (TextView) findViewById(R.id.tv_expression);
+        tvResult = (TextView) findViewById(R.id.tv_result);
         findTheButtons();
     }
 
@@ -172,9 +175,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case "plusMinus":
-                if (firstChar == '-')
-                    appendChar(eq);
-                else {
+                if (firstChar == '-') {
+                    eq = String.valueOf(equation.deleteCharAt(0));
+                    displayResult(eq);
+                } else {
                     equation = new StringBuilder("-").append(eq);
                 }
                 break;
@@ -188,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
             default:
                 equation.append(btn);
         }
-        tv_feedback.setText(equation);
+        tvExpression.setText(equation);
     }
 
     /**
@@ -214,7 +218,6 @@ public class MainActivity extends AppCompatActivity {
             obResult = String.valueOf(engine.eval(theEquation));
             // TODO: Casting to java.lang.String doesn't work; calling .toString() and wrapping in String.valueOf() each work. FIND OUT WHY.
         } catch (ScriptException se) {
-
         }
 
 //        switch (typeOption) {
@@ -246,12 +249,10 @@ public class MainActivity extends AppCompatActivity {
 //            default:
 //        }
 
-
         if (obResult != null) {
             Log.i(LOG_TAG, "Result in obResult: " + obResult);
-            tv_feedback.append("\n");
-            tv_feedback.append(String.valueOf(R.string.result));
-            tv_feedback.append(obResult);
+            tvResult.setText(R.string.result);
+            tvResult.append(obResult);
         } else {
             throw new AssertionError();
         }

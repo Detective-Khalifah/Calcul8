@@ -25,13 +25,4 @@
 
     <string name="todo">TODO</string>
     <string name="welcome_text_splash_activity">Welcome to Calcul8 App</string>
-
-    <string-array name="types">Num type:
-        <item>Byter</item>
-        <item>Shorter</item>
-        <item>Inter</item>
-        <item>Longer</item>
-        <item>Floater</item>
-        <item>Doubler</item>
-    </string-array>
 </resources>

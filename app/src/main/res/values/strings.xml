@@ -23,6 +23,9 @@
     <string name="right_parenthesis">)</string>
     <string name="del">Del</string>
 
+    <string name="todo">TODO</string>
+    <string name="welcome_text_splash_activity">Welcome to Calcul8 App</string>
+
     <string-array name="types">Num type:
         <item>Byter</item>
         <item>Shorter</item>

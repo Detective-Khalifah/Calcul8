@@ -18,6 +18,8 @@
     <string name="sign_plus_minus">±</string>
     <string name="sign_equality">=</string>
 
+    <string name="result">Do the Math!</string>
+
     <string-array name="types">Num type:
         <item>Byter</item>
         <item>Shorter</item>

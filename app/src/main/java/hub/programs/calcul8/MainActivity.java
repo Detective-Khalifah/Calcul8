@@ -5,13 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
 
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptEngine;
@@ -23,8 +17,7 @@ public class MainActivity extends AppCompatActivity {
             buttonZero, buttonOne, buttonTwo, buttonThree, buttonFour, buttonFive,
             buttonSix, buttonSeven, buttonEight, buttonNine,
             buttonDecimal;
-    private static EditText et_exp;
-    private static TextView tv_result;
+    private static TextView tv_feedback;
     private static StringBuilder equation = new StringBuilder();
 
     @Override
@@ -32,8 +25,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        et_exp = (EditText) findViewById(R.id.et_expression);
-        tv_result = (TextView) findViewById(R.id.result);
+        tv_feedback = (TextView) findViewById(R.id.et_feedback);
         findTheButtons();
     }
 
@@ -187,12 +179,16 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case "equals?":
-                displayResult(eq);
+                if (eq.endsWith("*") || eq.endsWith("+") || eq.endsWith("-") || eq.endsWith("/")) {
+                    eq = String.valueOf(equation.deleteCharAt(length));
+                    displayResult(eq);
+                } else
+                    displayResult(eq);
                 break;
             default:
                 equation.append(btn);
         }
-        et_exp.setText(equation);
+        tv_feedback.setText(equation);
     }
 
     /**
@@ -203,7 +199,6 @@ public class MainActivity extends AppCompatActivity {
      */
 
     private void displayResult (/*char typeOption, */String theEquation) {
-        Log.i(LOG_TAG, theEquation);
         String obResult = null;
 
         // JavaScript
@@ -215,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Mozilla Rhino
         try {
-            javax.script.ScriptEngine engine = new ScriptEngineManager().getEngineByName("rhino");
+            ScriptEngine engine = new ScriptEngineManager().getEngineByName("rhino");
             obResult = String.valueOf(engine.eval(theEquation));
             // TODO: Casting to java.lang.String doesn't work; calling .toString() and wrapping in String.valueOf() each work. FIND OUT WHY.
         } catch (ScriptException se) {
@@ -252,9 +247,11 @@ public class MainActivity extends AppCompatActivity {
 //        }
 
 
-        Log.i(LOG_TAG, "Result in obResult: " + obResult);
         if (obResult != null) {
-            tv_result.setText(obResult);
+            Log.i(LOG_TAG, "Result in obResult: " + obResult);
+            tv_feedback.append("\n");
+            tv_feedback.append(String.valueOf(R.string.result));
+            tv_feedback.append(obResult);
         } else {
             throw new AssertionError();
         }

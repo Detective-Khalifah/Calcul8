@@ -212,7 +212,11 @@ public class MainActivity extends AppCompatActivity {
             case "plusMinus":
                 if (firstChar == '-') {
                     eq = String.valueOf(equation.deleteCharAt(0));
-                    displayResult(eq);
+                    try {
+                        displayResult(eq);
+                    } catch (ScriptException e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     equation = new StringBuilder("-").append(eq);
                 }
@@ -220,9 +224,18 @@ public class MainActivity extends AppCompatActivity {
             case "equals?":
                 if (eq.endsWith("*") || eq.endsWith("+") || eq.endsWith("-") || eq.endsWith("/")) {
                     eq = String.valueOf(equation.deleteCharAt(length));
-                    displayResult(eq);
-                } else
-                    displayResult(eq);
+                    try {
+                        displayResult(eq);
+                    } catch (ScriptException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        displayResult(eq);
+                    } catch (ScriptException e) {
+                        e.printStackTrace();
+                    }
+                }
                 break;
             default:
                 equation.append(btn);
@@ -239,9 +252,10 @@ public class MainActivity extends AppCompatActivity {
      * @param theEquation String formatted equation
      */
 
-    private void displayResult (String theEquation) {
-        long startTime;
-        String obResult = null; // evaluated result, to be parsed into different types.
+    private void displayResult (String theEquation) throws ScriptException {
+        ScriptEngine engine = new ScriptEngineManager().getEngineByName("rhino");
+        String obResult = null, evalResult; // evaluated result, to be parsed into different types.
+
 //        byte byteResult; short shortResult; int intResult; long longResult; float floatResult; double doubleResult;
 
         // JavaScript
@@ -252,47 +266,44 @@ public class MainActivity extends AppCompatActivity {
 //        }
 
         // Mozilla Rhino
-        try {
-            ScriptEngine engine = new ScriptEngineManager().getEngineByName("rhino");
-            obResult = String.valueOf(engine.eval(theEquation));
-            // TODO: Casting to java.lang.String doesn't work; calling .toString() and wrapping in String.valueOf() each work. FIND OUT WHY.
-        } catch (ScriptException se) {
-        }
-
-        int decimal = obResult.indexOf(".");
+        evalResult = String.valueOf(engine.eval(theEquation));
         switch (type) {
             case 'b': // byte
-                if (obResult.contains("."))
-                    obResult = obResult.substring(0, obResult.indexOf("."));
-                obResult = String.valueOf((Byte.parseByte(obResult)));
+                if (evalResult.contains("."))
+                    obResult = String.valueOf(Byte.parseByte(evalResult.substring(0, evalResult.indexOf("."))));
+                else
+                    obResult = String.valueOf(Byte.parseByte(evalResult));
                 break;
             case 's': // short
-                if (obResult.contains("."))
-                    obResult = obResult.substring(0, obResult.indexOf("."));
-                obResult = String.valueOf((Short.parseShort(obResult)));
+                if (evalResult.contains("."))
+                    obResult = String.valueOf(Short.parseShort(evalResult.substring(0, evalResult.indexOf("."))));
+                else
+                    obResult = String.valueOf((Short.parseShort(evalResult)));
                 break;
             case 'i': // int
-                if (obResult.contains("."))
-                    obResult = obResult.substring(0, obResult.indexOf("."));
-                obResult = String.valueOf(Integer.parseInt(obResult));
+                if (evalResult.contains("."))
+                    obResult = String.valueOf(Integer.parseInt(evalResult.substring(0, evalResult.indexOf("."))));
+                else
+                    obResult = String.valueOf(Integer.parseInt(evalResult));
                 break;
             case 'l': // long
-                if (obResult.contains("."))
-                    obResult = obResult.substring(0, obResult.indexOf("."));
-                obResult = String.valueOf(Long.parseLong(obResult));
+                if (evalResult.contains("."))
+                    obResult = String.valueOf(Long.parseLong(evalResult.substring(0, evalResult.indexOf("."))));
+                else
+                    obResult = String.valueOf(Long.parseLong(evalResult));
                 break;
             case 'f': // float
-                obResult = String.valueOf(Float.parseFloat(obResult));
+                obResult = String.valueOf(Float.parseFloat(evalResult));
                 break;
             case 'd': //double
-                obResult = String.valueOf(Double.parseDouble(obResult)).substring(0, obResult.indexOf("."));
+                obResult = String.valueOf(Double.parseDouble(evalResult));
                 break;
 
             case 'D': // for BigDecimal ty
-                BigDecimal bD = new BigDecimal(obResult);
+                BigDecimal bD = new BigDecimal(evalResult);
                 break;
             case 'I': // for BigInteger
-                BigInteger bI = new BigInteger(obResult);
+                BigInteger bI = new BigInteger(evalResult);
                 break;
             default:
         }

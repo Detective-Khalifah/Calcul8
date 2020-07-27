@@ -37,6 +37,14 @@
         <!--        android:textSize="?android:textAppearanceMedium"-->
     </LinearLayout>
 
+    <Spinner
+        android:id="@+id/types_spin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/calc_pad"
+        android:gravity="center"
+        android:spinnerMode="dropdown" />
+
     <LinearLayout
         android:id="@+id/calc_pad"
         android:layout_width="match_parent"

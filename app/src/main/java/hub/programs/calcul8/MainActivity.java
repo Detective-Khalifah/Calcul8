@@ -4,21 +4,28 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static char type = '0';
     private static final String LOG_TAG = MainActivity.class.getName();
     private static Button buttonDivision, buttonMinus, buttonPlus, buttonPlusMinus, buttonEquality,
             buttonZero, buttonOne, buttonTwo, buttonThree, buttonFour, buttonFive,
             buttonSix, buttonSeven, buttonEight, buttonNine,
             buttonDecimal;
+    private static Spinner spTypes;
     private static TextView tvExpression, tvResult;
     private static StringBuilder equation = new StringBuilder();
 
@@ -29,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
         tvExpression = (TextView) findViewById(R.id.tv_expression);
         tvResult = (TextView) findViewById(R.id.tv_result);
+        spTypes = (Spinner) findViewById(R.id.types_spin);
         findTheButtons();
+        setTypeSpinner();
     }
 
     protected void findTheButtons () {
@@ -51,6 +60,32 @@ public class MainActivity extends AppCompatActivity {
         buttonNine = (Button) findViewById(R.id.bt_nine);
 
         buttonDecimal = (Button) findViewById(R.id.bt_deci);
+    }
+
+    private void setTypeSpinner () {
+        ArrayAdapter typeSpin = ArrayAdapter.createFromResource(this, R.array.types,
+                android.R.layout.simple_spinner_item);
+        typeSpin.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        /* android.R.layout.simple_spinner_dropdown_item */
+
+        spTypes.setAdapter(typeSpin);
+
+        spTypes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected (AdapterView<?> adapterView, View view, int pos, long id) {
+                type = String.valueOf(adapterView.getItemAtPosition(pos)).charAt(0);
+                Log.i(LOG_TAG, "The equation: " + equation.toString());
+//                if (equation.equals("")) {
+//                    // do nothing
+//                } else
+//                    appendChar("equals?");
+            }
+
+            @Override
+            public void onNothingSelected (AdapterView<?> adapterView) {
+                type = 'i';
+            }
+        });
     }
 
     /**
@@ -200,10 +235,14 @@ public class MainActivity extends AppCompatActivity {
      * to determine what result is to be parsed; if none is selected, it will turn back/forward to
      * int by default.
      * /* @param typeOption the numeric data type being dealt with
+     *
+     * @param theEquation String formatted equation
      */
 
-    private void displayResult (/*char typeOption, */String theEquation) {
-        String obResult = null;
+    private void displayResult (String theEquation) {
+        long startTime;
+        String obResult = null; // evaluated result, to be parsed into different types.
+//        byte byteResult; short shortResult; int intResult; long longResult; float floatResult; double doubleResult;
 
         // JavaScript
 //        try {
@@ -220,34 +259,43 @@ public class MainActivity extends AppCompatActivity {
         } catch (ScriptException se) {
         }
 
-//        switch (typeOption) {
-//            case 'b':
-//                byte byteResult = Byte.parseByte(String.valueOf(equation));
-//                break;
-//            case 'd':
-//                double doubleResult = Double.parseDouble(String.valueOf(equation));
-//                break;
-//            case 'f':
-//                float floatResult = Float.parseFloat(String.valueOf(equation));
-//                break;
-//            case 's':
-//                short shortResult = Short.parseShort(String.valueOf(equation));
-//                break;
-//            case 'i':
-//                int intResult = Integer.parseInt(String.valueOf(equation));
-//                break;
-//            case 'l':
-//                long longResult = Long.parseLong(String.valueOf(equation));
-//                break;
-//
-//            case 'D': // for BigDecimal ty
-//                BigDecimal bD = new BigDecimal(equation);
-//                break;
-//            case 'I': // for BigInteger
-//                BigInteger bI = new BigInteger(equation);
-//                break;
-//            default:
-//        }
+        int decimal = obResult.indexOf(".");
+        switch (type) {
+            case 'b': // byte
+                if (obResult.contains("."))
+                    obResult = obResult.substring(0, obResult.indexOf("."));
+                obResult = String.valueOf((Byte.parseByte(obResult)));
+                break;
+            case 's': // short
+                if (obResult.contains("."))
+                    obResult = obResult.substring(0, obResult.indexOf("."));
+                obResult = String.valueOf((Short.parseShort(obResult)));
+                break;
+            case 'i': // int
+                if (obResult.contains("."))
+                    obResult = obResult.substring(0, obResult.indexOf("."));
+                obResult = String.valueOf(Integer.parseInt(obResult));
+                break;
+            case 'l': // long
+                if (obResult.contains("."))
+                    obResult = obResult.substring(0, obResult.indexOf("."));
+                obResult = String.valueOf(Long.parseLong(obResult));
+                break;
+            case 'f': // float
+                obResult = String.valueOf(Float.parseFloat(obResult));
+                break;
+            case 'd': //double
+                obResult = String.valueOf(Double.parseDouble(obResult)).substring(0, obResult.indexOf("."));
+                break;
+
+            case 'D': // for BigDecimal ty
+                BigDecimal bD = new BigDecimal(obResult);
+                break;
+            case 'I': // for BigInteger
+                BigInteger bI = new BigInteger(obResult);
+                break;
+            default:
+        }
 
         if (obResult != null) {
             Log.i(LOG_TAG, "Result in obResult: " + obResult);
@@ -268,4 +316,16 @@ public class MainActivity extends AppCompatActivity {
     //  to parse result depending on Spinner item selected.
 
     //    private void checkType () { }
+
+    //                truncate = String.valueOf(Integer.parseInt(obResult)).split(".");
+//                obResult = truncate[0];
+
+//    obResult = String.valueOf(Integer.parseInt(obResult.split("")[0]));
+
+    //                startTime = System.currentTimeMillis();
+//                truncate = String.valueOf(Long.parseLong(obResult)).split(".");
+//                obResult = String.valueOf(Long.parseLong(obResult));
+//                truncate = obResult.split(".");
+//                obResult = truncate[0] + (System.currentTimeMillis() - startTime);
+
 }

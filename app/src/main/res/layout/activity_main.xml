@@ -1,45 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <!-- TODO: Make TextView show result instead of the expression only.-->
-    <LinearLayout
+    <!-- TODO: Find out why android:textSize doesn't accept ?android:textAppearance...-->
+    <RelativeLayout
         android:id="@+id/layer1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:layout_above="@+id/calc_pad"
+        android:layout_height="0dp"
         android:gravity="top"
-        android:weightSum="0.7"
+        android:layout_gravity="top"
+        android:layout_weight="3.5"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_feedback"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_weight="3"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp" />
+            android:foregroundGravity="fill"
+            android:textSize="24sp"
+            tools:text="24.4" />
 
         <Spinner
             android:id="@+id/types_spin"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_below="@+id/tv_feedback"
             android:spinnerMode="dropdown" />
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/calc_pad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
+        android:layout_weight="10"
+        android:gravity="bottom"
         style="?android:attr/buttonBarStyle"
         android:orientation="vertical">
 
@@ -232,14 +233,4 @@
         </LinearLayout>
     </LinearLayout>
 
-</RelativeLayout>
-
-    <!--        <TextView-->
-    <!--            android:id="@+id/tv_result"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:gravity="center"-->
-    <!--            android:paddingTop="8dp"-->
-    <!--            android:paddingBottom="8dp"-->
-    <!--            android:textAlignment="center" />-->
-    <!--            android:textSize="?android:textAppearanceLarge"/>-->
+</LinearLayout>

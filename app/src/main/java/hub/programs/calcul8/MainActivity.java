@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         tvFeedback = (TextView) findViewById(R.id.tv_feedback);
-//        tvResult = (TextView) findViewById(R.id.tv_result);
+        tvFeedback.setText(equation);
         spTypes = (Spinner) findViewById(R.id.types_spin);
         findTheButtons();
         setTypeSpinner();
@@ -243,13 +243,9 @@ public class MainActivity extends AppCompatActivity {
                 tvFeedback.setText(equation);
                 break;
             case "equals?":
-                if (eq.endsWith("*") || eq.endsWith("+") || eq.endsWith("-") || eq.endsWith("/")) {
+                if (eq.endsWith("*") || eq.endsWith("+") || eq.endsWith("-") || eq.endsWith("/"))
                     eq = String.valueOf(equation.deleteCharAt(length));
-                    displayResult(eq);
-                } else {
-                    displayResult(eq);
-                }
-                tvFeedback.setText(equation);
+                displayResult(eq);
                 break;
             case "(":
             case ")":
@@ -340,9 +336,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (obResult != null) {
-            Log.i(LOG_TAG, "Result in obResult: " + obResult);
-//            tvResult.setText(R.string.result);
-//            tvFeedback.setText(equation);
+//            tvFeedback.setText(R.string.result);
+            tvFeedback.setText(equation);
             tvFeedback.append("\n");
             tvFeedback.append(obResult);
         } else

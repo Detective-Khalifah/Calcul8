@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
             case "equals?":
                 if (eq.endsWith("*") || eq.endsWith("+") || eq.endsWith("-") || eq.endsWith("/"))
                     eq = String.valueOf(equation.deleteCharAt(length));
-                displayResult(eq);
+                displayResult(type, eq);
                 break;
             case "(":
             case ")":
@@ -239,8 +239,7 @@ public class MainActivity extends AppCompatActivity {
      * @param theEquation String formatted equation
      */
 
-    private void displayResult (String theEquation) {
-        char numType;
+    private void displayResult (char numType, String theEquation) {
         String obResult = null, evalResult = "0.0"; // evaluated result, to be parsed into different types.
 //        byte byteResult; short shortResult; int intResult; long longResult; float floatResult; double doubleResult;
 
@@ -252,12 +251,8 @@ public class MainActivity extends AppCompatActivity {
             tvFeedback.setText(se.getLocalizedMessage());
         }
 
-//        numType = checkType(Double.parseDouble(evalResult));
-//        Log.i(LOG_TAG, "; numType: " + numType);
-
-        numType = type;
         // TODO: Make Spinner behave dynamically; change it's content when data falls into another type.
-//        type = numType;
+        type = numType;
         Log.i(LOG_TAG, "Type selected: " + type);
         try {
             switch (numType) {
@@ -268,33 +263,40 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         obResult = String.valueOf(Byte.parseByte(evalResult));
                     }
+                    Log.i(LOG_TAG, "case b used.");
                     break;
                 case 's': // short
                     if (evalResult.contains("."))
                         obResult = String.valueOf(Short.parseShort(evalResult.substring(0, evalResult.indexOf("."))));
                     else
                         obResult = String.valueOf((Short.parseShort(evalResult)));
+                    Log.i(LOG_TAG, "case s used.");
                     break;
                 case 'i': // int
                     if (evalResult.contains("."))
                         obResult = String.valueOf(Integer.parseInt(evalResult.substring(0, evalResult.indexOf("."))));
                     else
                         obResult = String.valueOf(Integer.parseInt(evalResult));
+                    Log.i(LOG_TAG, "case i used.");
                     break;
                 case 'l': // long
                     if (evalResult.contains("."))
                         obResult = String.valueOf(Long.parseLong(evalResult.substring(0, evalResult.indexOf("."))));
                     else
                         obResult = String.valueOf(Long.parseLong(evalResult));
+                    Log.i(LOG_TAG, "case l used.");
                     break;
                 case 'f': // float
                     obResult = String.valueOf(Float.parseFloat(evalResult));
+                    Log.i(LOG_TAG, "case f used.");
                     break;
                 case 'd': //double
                     obResult = String.valueOf(Double.parseDouble(evalResult));
+                    Log.i(LOG_TAG, "case d used.");
                     break;
                 case 'D': // for BigDecimal ty
                     obResult = String.valueOf(new BigDecimal(evalResult));
+                    Log.i(LOG_TAG, "case D used.");
                     break;
                 case 'I': // for BigInteger
                     obResult = (evalResult.contains(".")
@@ -302,19 +304,34 @@ public class MainActivity extends AppCompatActivity {
                             String.valueOf(new BigInteger((evalResult.substring(0, evalResult.indexOf(".")))))
                             :
                             String.valueOf(new BigInteger(evalResult)));
+                    Log.i(LOG_TAG, "case I used.");
                     break;
             }
 
 //            if (obResult != null) {
 //            tvFeedback.setText(R.string.result);
+            Log.i(LOG_TAG, "obResult: " + obResult);
             tvFeedback.setText(equation);
             tvFeedback.append("\n");
             tvFeedback.append(obResult);
-//            } else
-//                throw new AssertionError();
 
         } catch (NumberFormatException nfe) {
-            tvFeedback.setText(nfe.getLocalizedMessage());
+            try {
+                if (obResult == null) {
+                    throw new NullPointerException();
+                } else {
+                    tvFeedback.setText(nfe.getLocalizedMessage());
+//                    numType = checkType(Double.parseDouble(evalResult));
+//                    displayResult(numType, theEquation);
+//                    Log.i(LOG_TAG, "numType: " + numType);
+
+                    displayResult(checkType(Double.parseDouble(evalResult)), theEquation);
+                    Log.i(LOG_TAG, "; numType returned: " + checkType(Double.parseDouble(evalResult)));
+                }
+            } catch (NullPointerException npe) { // No_Expression
+                obResult = "0";
+                tvFeedback.setText(obResult);
+            }
         }
 
     }
@@ -322,17 +339,28 @@ public class MainActivity extends AppCompatActivity {
     private char checkType (double doubleResult) {
         // TODO: Make conditions for BigInteger and BigDecimal
         // java.lang.NumberFormatException:
-        if (doubleResult > 9223372036854775807.0 || doubleResult < -9223372036854775808.0) {
-            // TODO: Find out the range for other number types including this.
-            return 'd';
-        } else if (doubleResult > 2147483647 || doubleResult < -2147483648) { // Value out of range for int
-            return 'l';
-        } else if (doubleResult > 32767 || doubleResult < -32768) {// Value out of range for short
-            return 'i';
-        } else if (doubleResult > 127 || doubleResult < -128) {// Value out of range for byte:
-            return 's';
-        } else
+//        if (doubleResult > 9223372036854775807.0 || doubleResult < -9223372036854775808.0) {
+//            // TODO: Find out the range for other number types including this.
+//            return 'd';
+//        } else if (doubleResult > 2147483647 || doubleResult < -2147483648) { // Value out of range for int
+//            return 'l';
+//        } else if (doubleResult > 32767 || doubleResult < -32768) {// Value out of range for short
+//            return 'i';
+//        } else if (doubleResult > 127 || doubleResult < -128) {// Value out of range for byte:
+//            return 's';
+//        } else
+//            return 'b';
+
+        if (doubleResult >= -128 && doubleResult <= 127)
             return 'b';
+        else if (doubleResult >= -32768 && doubleResult <= 32767)
+            return 's';
+        else if (doubleResult >= -2147483648 && doubleResult <= 2147483647)
+            return 'i';
+        else if (doubleResult >= -9223372036854775808.0 && doubleResult <= 9223372036854775807.0)
+            return 'l';
+        else
+            return 'D';
     }
 
 }

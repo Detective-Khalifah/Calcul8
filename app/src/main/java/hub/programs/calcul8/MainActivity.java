@@ -20,9 +20,9 @@ public class MainActivity extends AppCompatActivity {
 
     private static char type = 'b';
     private static final String LOG_TAG = MainActivity.class.getName();
+    private static StringBuilder equation = new StringBuilder();
     private Spinner spTypes;
     private TextView tvFeedback;
-    private static StringBuilder equation = new StringBuilder();
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -252,64 +252,71 @@ public class MainActivity extends AppCompatActivity {
             tvFeedback.setText(se.getLocalizedMessage());
         }
 
-        numType = checkType(Double.parseDouble(evalResult));
-        Log.i(LOG_TAG, "; numType: " + numType);
+//        numType = checkType(Double.parseDouble(evalResult));
+//        Log.i(LOG_TAG, "; numType: " + numType);
 
+        numType = type;
         // TODO: Make Spinner behave dynamically; change it's content when data falls into another type.
-        type = numType;
+//        type = numType;
         Log.i(LOG_TAG, "Type selected: " + type);
-        switch (numType) {
-            case 'b': // byte
-                // value within range of byte
-                if (evalResult.contains(".")) {
-                    obResult = String.valueOf(Byte.parseByte(evalResult.substring(0, evalResult.indexOf("."))));
-                } else {
-                    obResult = String.valueOf(Byte.parseByte(evalResult));
-                }
-                break;
-            case 's': // short
-                if (evalResult.contains("."))
-                    obResult = String.valueOf(Short.parseShort(evalResult.substring(0, evalResult.indexOf("."))));
-                else
-                    obResult = String.valueOf((Short.parseShort(evalResult)));
-                break;
-            case 'i': // int
-                if (evalResult.contains("."))
-                    obResult = String.valueOf(Integer.parseInt(evalResult.substring(0, evalResult.indexOf("."))));
-                else
-                    obResult = String.valueOf(Integer.parseInt(evalResult));
-                break;
-            case 'l': // long
-                if (evalResult.contains("."))
-                    obResult = String.valueOf(Long.parseLong(evalResult.substring(0, evalResult.indexOf("."))));
-                else
-                    obResult = String.valueOf(Long.parseLong(evalResult));
-                break;
-            case 'f': // float
-                obResult = String.valueOf(Float.parseFloat(evalResult));
-                break;
-            case 'd': //double
-                obResult = String.valueOf(Double.parseDouble(evalResult));
-                break;
-            case 'D': // for BigDecimal ty
-                obResult = String.valueOf(new BigDecimal(evalResult));
-                break;
-            case 'I': // for BigInteger
-                obResult = (evalResult.contains(".")
-                        ?
-                        String.valueOf(new BigInteger((evalResult.substring(0, evalResult.indexOf(".")))))
-                        :
-                        String.valueOf(new BigInteger(evalResult)));
-                break;
-        }
+        try {
+            switch (numType) {
+                case 'b': // byte
+                    // value within range of byte
+                    if (evalResult.contains(".")) {
+                        obResult = String.valueOf(Byte.parseByte(evalResult.substring(0, evalResult.indexOf("."))));
+                    } else {
+                        obResult = String.valueOf(Byte.parseByte(evalResult));
+                    }
+                    break;
+                case 's': // short
+                    if (evalResult.contains("."))
+                        obResult = String.valueOf(Short.parseShort(evalResult.substring(0, evalResult.indexOf("."))));
+                    else
+                        obResult = String.valueOf((Short.parseShort(evalResult)));
+                    break;
+                case 'i': // int
+                    if (evalResult.contains("."))
+                        obResult = String.valueOf(Integer.parseInt(evalResult.substring(0, evalResult.indexOf("."))));
+                    else
+                        obResult = String.valueOf(Integer.parseInt(evalResult));
+                    break;
+                case 'l': // long
+                    if (evalResult.contains("."))
+                        obResult = String.valueOf(Long.parseLong(evalResult.substring(0, evalResult.indexOf("."))));
+                    else
+                        obResult = String.valueOf(Long.parseLong(evalResult));
+                    break;
+                case 'f': // float
+                    obResult = String.valueOf(Float.parseFloat(evalResult));
+                    break;
+                case 'd': //double
+                    obResult = String.valueOf(Double.parseDouble(evalResult));
+                    break;
+                case 'D': // for BigDecimal ty
+                    obResult = String.valueOf(new BigDecimal(evalResult));
+                    break;
+                case 'I': // for BigInteger
+                    obResult = (evalResult.contains(".")
+                            ?
+                            String.valueOf(new BigInteger((evalResult.substring(0, evalResult.indexOf(".")))))
+                            :
+                            String.valueOf(new BigInteger(evalResult)));
+                    break;
+            }
 
-        if (obResult != null) {
+//            if (obResult != null) {
 //            tvFeedback.setText(R.string.result);
             tvFeedback.setText(equation);
             tvFeedback.append("\n");
             tvFeedback.append(obResult);
-        } else
-            throw new AssertionError();
+//            } else
+//                throw new AssertionError();
+
+        } catch (NumberFormatException nfe) {
+            tvFeedback.setText(nfe.getLocalizedMessage());
+        }
+
     }
 
     private char checkType (double doubleResult) {

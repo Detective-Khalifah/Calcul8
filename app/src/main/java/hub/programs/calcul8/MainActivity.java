@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private static Button buttonDivision, buttonMinus, buttonPlus, buttonPlusMinus, buttonEquality,
             buttonZero, buttonOne, buttonTwo, buttonThree, buttonFour, buttonFive,
             buttonSix, buttonSeven, buttonEight, buttonNine,
-            buttonDecimal;
+            buttonDecimal, buttonLePar, buttonRePar, buttonDel;
     private static Spinner spTypes;
     private static TextView tvFeedback;
     private static StringBuilder equation = new StringBuilder();
@@ -60,6 +60,9 @@ public class MainActivity extends AppCompatActivity {
         buttonNine = (Button) findViewById(R.id.bt_nine);
 
         buttonDecimal = (Button) findViewById(R.id.bt_deci);
+        buttonLePar = (Button) findViewById(R.id.bt_lePar);
+        buttonRePar = (Button) findViewById(R.id.bt_rePar);
+        buttonDel = (Button) findViewById(R.id.bt_del);
     }
 
     private void setTypeSpinner () {
@@ -154,6 +157,14 @@ public class MainActivity extends AppCompatActivity {
             case R.id.bt_nine:
                 appendChar("9");
                 break;
+            case R.id.bt_del:
+                appendChar("del");
+            case R.id.bt_lePar:
+                appendChar("(");
+                break;
+            case R.id.bt_rePar:
+                appendChar(")");
+                break;
         }
     }
 
@@ -239,6 +250,15 @@ public class MainActivity extends AppCompatActivity {
                     displayResult(eq);
                 }
                 tvFeedback.setText(equation);
+                break;
+            case "(":
+            case ")":
+                break;
+            case "del":
+//                equation.append("\b");
+//                equation = equation.delete(equation.length()-1, equation.length());
+//                eq = String.valueOf(equation);
+//                tvFeedback.setText(equation);
                 break;
             default:
                 equation.append(btn);

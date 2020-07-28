@@ -148,7 +148,7 @@
                 android:text="@string/number_nine" />
 
             <Button
-                android:id="@+id/rePar"
+                android:id="@+id/bt_rePar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="?android:attr/buttonBarButtonStyle"

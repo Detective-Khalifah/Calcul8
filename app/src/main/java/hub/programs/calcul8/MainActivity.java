@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -21,8 +20,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static char type = 'b';
     private static final String LOG_TAG = MainActivity.class.getName();
-    private static Spinner spTypes;
-    private static TextView tvFeedback;
+    private Spinner spTypes;
+    private TextView tvFeedback;
     private static StringBuilder equation = new StringBuilder();
 
     @Override

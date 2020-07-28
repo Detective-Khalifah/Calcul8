@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private Handler mWaitHandler = new Handler();
+    private final Handler mWaitHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

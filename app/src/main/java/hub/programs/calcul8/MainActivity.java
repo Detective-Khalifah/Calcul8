@@ -189,7 +189,8 @@ public class MainActivity extends AppCompatActivity {
                 // check if a decimal point is contained in the equation
                 // If there's one, replace it at the end; otherwise, append '.' to end of equation
                 if (eq.contains(".")) {
-
+                    equation.deleteCharAt(equation.indexOf("."));
+                    equation.append('.');
                 } else {
                     equation.append('.');
                 }

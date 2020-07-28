@@ -21,10 +21,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static char type = 'b';
     private static final String LOG_TAG = MainActivity.class.getName();
-    private static Button buttonDivision, buttonMinus, buttonPlus, buttonPlusMinus, buttonEquality,
-            buttonZero, buttonOne, buttonTwo, buttonThree, buttonFour, buttonFive,
-            buttonSix, buttonSeven, buttonEight, buttonNine,
-            buttonDecimal, buttonLePar, buttonRePar, buttonDel;
     private static Spinner spTypes;
     private static TextView tvFeedback;
     private static StringBuilder equation = new StringBuilder();
@@ -37,32 +33,7 @@ public class MainActivity extends AppCompatActivity {
         tvFeedback = (TextView) findViewById(R.id.tv_feedback);
         tvFeedback.setText(equation);
         spTypes = (Spinner) findViewById(R.id.types_spin);
-        findTheButtons();
         setTypeSpinner();
-    }
-
-    protected void findTheButtons () {
-        buttonDivision = (Button) findViewById(R.id.bt_divi);
-        buttonMinus = (Button) findViewById(R.id.bt_minus);
-        buttonPlus = (Button) findViewById(R.id.bt_plus);
-        buttonPlusMinus = (Button) findViewById(R.id.bt_plusMinus);
-        buttonEquality = (Button) findViewById(R.id.bt_equal);
-
-        buttonZero = (Button) findViewById(R.id.bt_zero);
-        buttonOne = (Button) findViewById(R.id.bt_one);
-        buttonTwo = (Button) findViewById(R.id.bt_two);
-        buttonThree = (Button) findViewById(R.id.bt_three);
-        buttonFour = (Button) findViewById(R.id.bt_four);
-        buttonFive = (Button) findViewById(R.id.bt_five);
-        buttonSix = (Button) findViewById(R.id.bt_six);
-        buttonSeven = (Button) findViewById(R.id.bt_seven);
-        buttonEight = (Button) findViewById(R.id.bt_eight);
-        buttonNine = (Button) findViewById(R.id.bt_nine);
-
-        buttonDecimal = (Button) findViewById(R.id.bt_deci);
-        buttonLePar = (Button) findViewById(R.id.bt_lePar);
-        buttonRePar = (Button) findViewById(R.id.bt_rePar);
-        buttonDel = (Button) findViewById(R.id.bt_del);
     }
 
     private void setTypeSpinner () {
@@ -188,12 +159,9 @@ public class MainActivity extends AppCompatActivity {
             case "deciPoint":
                 // check if a decimal point is contained in the equation
                 // If there's one, replace it at the end; otherwise, append '.' to end of equation
-                if (eq.contains(".")) {
+                if (eq.contains("."))
                     equation.deleteCharAt(equation.indexOf("."));
-                    equation.append('.');
-                } else {
-                    equation.append('.');
-                }
+                equation.append('.');
                 tvFeedback.setText(equation);
                 break;
             case "divi":

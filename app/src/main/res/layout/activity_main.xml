@@ -6,34 +6,45 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/result"
+    <!-- TODO: Make TextView show result instead of the expression only.-->
+    <LinearLayout
+        android:id="@+id/layer1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/result" />
+        android:layout_marginBottom="24dp"
+        android:layout_above="@+id/calc_pad"
+        android:gravity="top"
+        android:weightSum="0.7"
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/et_expression"
-        android:layout_width="match_parent"
-        android:layout_centerInParent="true"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="false"
-        android:layout_gravity="center"
-        android:layout_height="wrap_content"
-        android:clickable="false"
-        android:editable="false"
-        android:inputType="text"
-        android:longClickable="false" />
+        <TextView
+            android:id="@+id/tv_feedback"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="3"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp" />
+
+        <Spinner
+            android:id="@+id/types_spin"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:spinnerMode="dropdown" />
+    </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/calc_pad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
+        style="?android:attr/buttonBarStyle"
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -42,6 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="touched"
+                style="?android:attr/buttonBarButtonStyle"
                 android:text="@string/number_one" />
 
             <Button
@@ -49,6 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="touched"
+                style="?android:attr/buttonBarButtonStyle"
                 android:text="@string/number_two" />
 
             <Button
@@ -56,11 +69,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="touched"
+                style="?android:attr/buttonBarButtonStyle"
                 android:text="@string/number_three" />
+
+            <Button
+                android:id="@+id/bt_del"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:longClickable="true"
+                style="?android:attr/buttonBarButtonStyle"
+                android:text="@string/del" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -69,6 +91,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="touched"
+                style="?android:attr/buttonBarButtonStyle"
                 android:text="@string/number_four" />
 
             <Button
@@ -76,6 +99,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="touched"
+                style="?android:attr/buttonBarButtonStyle"
                 android:text="@string/number_five" />
 
             <Button
@@ -83,11 +107,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="touched"
+                style="?android:attr/buttonBarButtonStyle"
                 android:text="@string/number_six" />
+
+            <Button
+                android:id="@+id/bt_lePar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="?android:attr/buttonBarButtonStyle"
+                android:text="@string/left_parenthesis" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -96,6 +128,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="touched"
+                style="?android:attr/buttonBarButtonStyle"
                 android:text="@string/number_seven" />
 
             <Button
@@ -103,6 +136,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="touched"
+                style="?android:attr/buttonBarButtonStyle"
                 android:text="@string/number_eight" />
 
             <Button
@@ -110,11 +144,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="touched"
+                style="?android:attr/buttonBarButtonStyle"
                 android:text="@string/number_nine" />
+
+            <Button
+                android:id="@+id/rePar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="?android:attr/buttonBarButtonStyle"
+                android:text="@string/right_parenthesis" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -123,6 +165,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="touched"
+                style="?android:attr/buttonBarButtonStyle"
                 android:text="@string/number_zero" />
 
             <Button
@@ -130,6 +173,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="touched"
+                style="?android:attr/buttonBarButtonStyle"
                 android:text="@string/decimal" />
 
             <Button
@@ -137,11 +181,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="touched"
+                style="?android:attr/buttonBarButtonStyle"
                 android:text="@string/sign_plus_minus" />
+
+            <Button
+                android:id="@+id/bt_equal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="touched"
+                style="?android:attr/buttonBarButtonStyle"
+                android:text="@string/sign_equality" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -150,6 +203,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="touched"
+                style="?android:attr/buttonBarButtonStyle"
                 android:text="@string/sign_plus" />
 
             <Button
@@ -157,6 +211,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="touched"
+                style="?android:attr/buttonBarButtonStyle"
                 android:text="@string/sign_minus" />
 
             <Button
@@ -164,6 +219,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="touched"
+                style="?android:attr/buttonBarButtonStyle"
                 android:text="@string/sign_multiplication" />
 
             <Button
@@ -171,15 +227,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="touched"
+                style="?android:attr/buttonBarButtonStyle"
                 android:text="@string/sign_division" />
-
-            <Button
-                android:id="@+id/bt_equal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="touched"
-                android:text="@string/sign_equality" />
         </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/tv_result"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:gravity="center"-->
+    <!--            android:paddingTop="8dp"-->
+    <!--            android:paddingBottom="8dp"-->
+    <!--            android:textAlignment="center" />-->
+    <!--            android:textSize="?android:textAppearanceLarge"/>-->

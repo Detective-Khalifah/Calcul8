@@ -4,11 +4,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -18,13 +18,15 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static char type = 'b';
     private static final String LOG_TAG = MainActivity.class.getName();
     private static Button buttonDivision, buttonMinus, buttonPlus, buttonPlusMinus, buttonEquality,
             buttonZero, buttonOne, buttonTwo, buttonThree, buttonFour, buttonFive,
             buttonSix, buttonSeven, buttonEight, buttonNine,
             buttonDecimal;
-    private static EditText et_exp;
-    private static TextView tv_result;
+    private static Spinner spTypes;
+    private static TextView tvFeedback;
     private static StringBuilder equation = new StringBuilder();
 
     @Override
@@ -32,9 +34,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        et_exp = (EditText) findViewById(R.id.et_expression);
-        tv_result = (TextView) findViewById(R.id.result);
+        tvFeedback = (TextView) findViewById(R.id.tv_feedback);
+//        tvResult = (TextView) findViewById(R.id.tv_result);
+        spTypes = (Spinner) findViewById(R.id.types_spin);
         findTheButtons();
+        setTypeSpinner();
     }
 
     protected void findTheButtons () {
@@ -56,6 +60,39 @@ public class MainActivity extends AppCompatActivity {
         buttonNine = (Button) findViewById(R.id.bt_nine);
 
         buttonDecimal = (Button) findViewById(R.id.bt_deci);
+    }
+
+    private void setTypeSpinner () {
+        final ArrayAdapter typeSpin = ArrayAdapter.createFromResource(this, R.array.types,
+                android.R.layout.simple_spinner_item);
+        typeSpin.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        /* android.R.layout.simple_spinner_dropdown_item */
+
+        spTypes.setAdapter(typeSpin);
+
+        spTypes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected (AdapterView<?> adapterView, View view, int pos, long id) {
+                switch (String.valueOf(adapterView.getItemAtPosition(pos)).charAt(0)) {
+                    case 'b':
+                    case 's':
+                    case 'i':
+                    case 'l':
+                    case 'f':
+                    case 'd':
+                        type = String.valueOf(adapterView.getItemAtPosition(pos)).charAt(0);
+                        break;
+                    default:
+                        type = String.valueOf(adapterView.getItemAtPosition(pos)).charAt(3);
+                }
+                Log.i(LOG_TAG, "The equation: " + equation.toString());
+            }
+
+            @Override
+            public void onNothingSelected (AdapterView<?> adapterView) {
+                type = 'i';
+            }
+        });
     }
 
     /**
@@ -145,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     equation.append('.');
                 }
+                tvFeedback.setText(equation);
                 break;
             case "divi":
                 if (eq.endsWith("/"))
@@ -153,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
                     equation.replace(length, equation.length(), "/");
                 else
                     equation.append("/");
+                tvFeedback.setText(equation);
                 break;
             case "minus":
                 if (eq.endsWith("-"))
@@ -161,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
                     equation.replace(length, equation.length(), "-");
                 else
                     equation.append('-');
+                tvFeedback.setText(equation);
                 break;
             case "multi":
                 if (eq.endsWith("*"))
@@ -169,30 +209,41 @@ public class MainActivity extends AppCompatActivity {
                     equation.replace(length, equation.length(), "*");
                 else
                     equation.append("*");
+                tvFeedback.setText(equation);
                 break;
             case "plus":
-                if (eq.endsWith("+"))
+                if (eq.endsWith("+")) {
                     break;
-                else if (lastChar == '-' || lastChar == '*' || lastChar == '/') {
+                } else if (lastChar == '-' || lastChar == '*' || lastChar == '/')
                     equation.replace(length, equation.length(), "+");
-                } else {
+                else {
                     equation.append("+");
                 }
+                tvFeedback.setText(equation);
                 break;
             case "plusMinus":
-                if (firstChar == '-')
-                    appendChar(eq);
-                else {
+                if (firstChar == '-') {
+                    eq = String.valueOf(equation.deleteCharAt(0));
+                    equation = new StringBuilder(eq);
+//                    displayResult(eq);
+                } else {
                     equation = new StringBuilder("-").append(eq);
                 }
+                tvFeedback.setText(equation);
                 break;
             case "equals?":
-                displayResult(eq);
+                if (eq.endsWith("*") || eq.endsWith("+") || eq.endsWith("-") || eq.endsWith("/")) {
+                    eq = String.valueOf(equation.deleteCharAt(length));
+                    displayResult(eq);
+                } else {
+                    displayResult(eq);
+                }
+                tvFeedback.setText(equation);
                 break;
             default:
                 equation.append(btn);
+                tvFeedback.setText(equation);
         }
-        et_exp.setText(equation);
     }
 
     /**
@@ -200,74 +251,120 @@ public class MainActivity extends AppCompatActivity {
      * to determine what result is to be parsed; if none is selected, it will turn back/forward to
      * int by default.
      * /* @param typeOption the numeric data type being dealt with
+     *
+     * @param theEquation String formatted equation
      */
 
-    private void displayResult (/*char typeOption, */String theEquation) {
-        Log.i(LOG_TAG, theEquation);
-        String obResult = null;
+    private void displayResult (String theEquation) {
+        char numType;
+        String obResult = null, evalResult = "0.0"; // evaluated result, to be parsed into different types.
+//        byte byteResult; short shortResult; int intResult; long longResult; float floatResult; double doubleResult;
 
-        // JavaScript
+        // Mozilla Rhino
+        try {
+            ScriptEngine engine = new ScriptEngineManager().getEngineByName("rhino");
+            evalResult = String.valueOf(engine.eval(theEquation));
+        } catch (ScriptException se) {
+            tvFeedback.setText(se.getLocalizedMessage());
+        }
+
+        numType = checkType(Double.parseDouble(evalResult));
+        Log.i(LOG_TAG, "; numType: " + numType);
+
+        // TODO: Make Spinner behave dynamically; change it's content when data falls into another type.
+        type = numType;
+        Log.i(LOG_TAG, "Type selected: " + type);
+        switch (numType) {
+            case 'b': // byte
+                // value within range of byte
+                if (evalResult.contains(".")) {
+                    obResult = String.valueOf(Byte.parseByte(evalResult.substring(0, evalResult.indexOf("."))));
+                } else {
+                    obResult = String.valueOf(Byte.parseByte(evalResult));
+                }
+                break;
+            case 's': // short
+                if (evalResult.contains("."))
+                    obResult = String.valueOf(Short.parseShort(evalResult.substring(0, evalResult.indexOf("."))));
+                else
+                    obResult = String.valueOf((Short.parseShort(evalResult)));
+                break;
+            case 'i': // int
+                if (evalResult.contains("."))
+                    obResult = String.valueOf(Integer.parseInt(evalResult.substring(0, evalResult.indexOf("."))));
+                else
+                    obResult = String.valueOf(Integer.parseInt(evalResult));
+                break;
+            case 'l': // long
+                if (evalResult.contains("."))
+                    obResult = String.valueOf(Long.parseLong(evalResult.substring(0, evalResult.indexOf("."))));
+                else
+                    obResult = String.valueOf(Long.parseLong(evalResult));
+                break;
+            case 'f': // float
+                obResult = String.valueOf(Float.parseFloat(evalResult));
+                break;
+            case 'd': //double
+                obResult = String.valueOf(Double.parseDouble(evalResult));
+                break;
+            case 'D': // for BigDecimal ty
+                obResult = String.valueOf(new BigDecimal(evalResult));
+                break;
+            case 'I': // for BigInteger
+                obResult = (evalResult.contains(".")
+                        ?
+                        String.valueOf(new BigInteger((evalResult.substring(0, evalResult.indexOf(".")))))
+                        :
+                        String.valueOf(new BigInteger(evalResult)));
+                break;
+        }
+
+        if (obResult != null) {
+            Log.i(LOG_TAG, "Result in obResult: " + obResult);
+//            tvResult.setText(R.string.result);
+//            tvFeedback.setText(equation);
+            tvFeedback.append("\n");
+            tvFeedback.append(obResult);
+        } else
+            throw new AssertionError();
+    }
+
+    private char checkType (double doubleResult) {
+        // TODO: Make conditions for BigInteger and BigDecimal
+        // java.lang.NumberFormatException:
+        if (doubleResult > 9223372036854775807.0 || doubleResult < -9223372036854775808.0) {
+            // TODO: Find out the range for other number types including this.
+            return 'd';
+        } else if (doubleResult > 2147483647 || doubleResult < -2147483648) { // Value out of range for int
+            return 'l';
+        } else if (doubleResult > 32767 || doubleResult < -32768) {// Value out of range for short
+            return 'i';
+        } else if (doubleResult > 127 || doubleResult < -128) {// Value out of range for byte:
+            return 's';
+        } else
+            return 'b';
+    }
+
+}
+
+// TODO; designate a handler for the data type spinner and use
+//     byteResult = Byte.parseByte((String) engine.eval(String.valueOf(equation)));
+//     shortResult = Short.parseShort((String) engine.eval(String.valueOf(equation)));
+//     intResult = (int) engine.eval(String.valueOf(equation));
+//     longResult = (long) engine.eval(String.valueOf(equation));
+//     floatResult = (float) engine.eval(String.valueOf(equation));
+//     doubleResult = (double) engine.eval(String.valueOf(equation));
+//  to parse result depending on Spinner item selected.
+
+// JavaScript
 //        try {
 //            ScriptEngine mExp = new ScriptEngineManager().getEngineByName("JavaScript");
 //            obResult = String.valueOf(mExp.eval(theEquation));
 //        } catch (ScriptException se) {
 //        }
-
-        // Mozilla Rhino
-        try {
-            javax.script.ScriptEngine engine = new ScriptEngineManager().getEngineByName("rhino");
-            obResult = String.valueOf(engine.eval(theEquation));
-            // TODO: Casting to java.lang.String doesn't work; calling .toString() and wrapping in String.valueOf() each work. FIND OUT WHY.
-        } catch (ScriptException se) {
-
-        }
-
-//        switch (typeOption) {
-//            case 'b':
-//                byte byteResult = Byte.parseByte(String.valueOf(equation));
-//                break;
-//            case 'd':
-//                double doubleResult = Double.parseDouble(String.valueOf(equation));
-//                break;
-//            case 'f':
-//                float floatResult = Float.parseFloat(String.valueOf(equation));
-//                break;
-//            case 's':
-//                short shortResult = Short.parseShort(String.valueOf(equation));
-//                break;
-//            case 'i':
-//                int intResult = Integer.parseInt(String.valueOf(equation));
-//                break;
-//            case 'l':
-//                long longResult = Long.parseLong(String.valueOf(equation));
-//                break;
-//
-//            case 'D': // for BigDecimal ty
-//                BigDecimal bD = new BigDecimal(equation);
-//                break;
-//            case 'I': // for BigInteger
-//                BigInteger bI = new BigInteger(equation);
-//                break;
-//            default:
+//                byteResult = (byte) (Byte.parseByte(evalResult.substring(0, evalResult.indexOf("."))));
+//if (doubleResult > 127 || doubleResult < -128) { // java.lang.NumberFormatException:
+//        // Value out of range for byte:
+//        type = 's';
+//        displayResult(type, theEquation);
 //        }
-
-
-        Log.i(LOG_TAG, "Result in obResult: " + obResult);
-        if (obResult != null) {
-            tv_result.setText(obResult);
-        } else {
-            throw new AssertionError();
-        }
-    }
-
-    // TODO; designate a handler for the data type spinner and use
-    //     byteResult = Byte.parseByte((String) engine.eval(String.valueOf(equation)));
-    //     shortResult = Short.parseShort((String) engine.eval(String.valueOf(equation)));
-    //     intResult = (int) engine.eval(String.valueOf(equation));
-    //     longResult = (long) engine.eval(String.valueOf(equation));
-    //     floatResult = (float) engine.eval(String.valueOf(equation));
-    //     doubleResult = (double) engine.eval(String.valueOf(equation));
-    //  to parse result depending on Spinner item selected.
-
-    //    private void checkType () { }
-}

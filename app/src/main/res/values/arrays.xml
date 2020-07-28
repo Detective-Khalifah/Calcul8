@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--    Num type:-->
+    <string-array name="types">
+        <item>byter</item>
+        <item>shorter</item>
+        <item>inter</item>
+        <item>longer</item>
+        <item>floater</item>
+        <item>doubler</item>
+        <item>BigDecimal</item>
+        <item>BigInteger</item>
+    </string-array>
+</resources>

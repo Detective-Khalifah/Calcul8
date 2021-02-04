@@ -10,10 +10,10 @@
     <!-- TODO: Find out why android:textSize doesn't accept ?android:textAppearance...-->
     <RelativeLayout
         android:id="@+id/layer1"
-        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="top"
-        android:layout_weight="3.5"
+        android:layout_width="match_parent"
+        android:layout_weight="3"
         android:gravity="top"
         android:orientation="vertical">
 
@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:foregroundGravity="fill"
-            android:textSize="24sp"
+            android:textSize="56sp"
             tools:text="24.4" />
 
         <Spinner
@@ -37,10 +37,10 @@
     <LinearLayout
         android:id="@+id/calc_pad"
         style="?android:attr/buttonBarStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_gravity="bottom"
-        android:layout_weight="10"
+        android:layout_width="match_parent"
+        android:layout_weight="9"
         android:gravity="bottom"
         android:orientation="vertical">
 
@@ -52,32 +52,36 @@
             <Button
                 android:id="@+id/bt_one"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:onClick="touched"
                 android:text="@string/number_one" />
 
             <Button
                 android:id="@+id/bt_two"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:onClick="touched"
                 android:text="@string/number_two" />
 
             <Button
                 android:id="@+id/bt_three"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:onClick="touched"
                 android:text="@string/number_three" />
 
             <Button
                 android:id="@+id/bt_del"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="2"
                 android:longClickable="true"
                 android:text="@string/del" />
         </LinearLayout>
@@ -90,32 +94,36 @@
             <Button
                 android:id="@+id/bt_four"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:onClick="touched"
                 android:text="@string/number_four" />
 
             <Button
                 android:id="@+id/bt_five"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:onClick="touched"
                 android:text="@string/number_five" />
 
             <Button
                 android:id="@+id/bt_six"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:onClick="touched"
                 android:text="@string/number_six" />
 
             <Button
                 android:id="@+id/bt_lePar"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="2"
                 android:text="@string/left_parenthesis" />
         </LinearLayout>
 
@@ -127,32 +135,36 @@
             <Button
                 android:id="@+id/bt_seven"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:onClick="touched"
                 android:text="@string/number_seven" />
 
             <Button
                 android:id="@+id/bt_eight"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:onClick="touched"
                 android:text="@string/number_eight" />
 
             <Button
                 android:id="@+id/bt_nine"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:onClick="touched"
                 android:text="@string/number_nine" />
 
             <Button
                 android:id="@+id/bt_rePar"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="2"
                 android:text="@string/right_parenthesis" />
         </LinearLayout>
 
@@ -164,32 +176,36 @@
             <Button
                 android:id="@+id/bt_zero"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:onClick="touched"
                 android:text="@string/number_zero" />
 
             <Button
                 android:id="@+id/bt_deci"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:onClick="touched"
                 android:text="@string/decimal" />
 
             <Button
                 android:id="@+id/bt_plusMinus"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:onClick="touched"
                 android:text="@string/sign_plus_minus" />
 
             <Button
                 android:id="@+id/bt_equal"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="2"
                 android:onClick="touched"
                 android:text="@string/sign_equality" />
         </LinearLayout>
@@ -202,32 +218,36 @@
             <Button
                 android:id="@+id/bt_plus"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:onClick="touched"
                 android:text="@string/sign_plus" />
 
             <Button
                 android:id="@+id/bt_minus"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:onClick="touched"
                 android:text="@string/sign_minus" />
 
             <Button
                 android:id="@+id/bt_multip"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:onClick="touched"
                 android:text="@string/sign_multiplication" />
 
             <Button
                 android:id="@+id/bt_divi"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:onClick="touched"
                 android:text="@string/sign_division" />
         </LinearLayout>

@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/layer1"
         android:layout_height="0dp"
         android:layout_gravity="top"
@@ -29,7 +29,6 @@
             android:id="@+id/tv_res"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_feedback"
             android:textColor="@android:color/black"
             android:textDirection="rtl"
             android:textSize="28sp"
@@ -39,10 +38,8 @@
             android:id="@+id/types_spin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignWithParentIfMissing="true"
-            android:layout_below="@+id/tv_feedback"
             android:spinnerMode="dropdown" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/calc_pad"

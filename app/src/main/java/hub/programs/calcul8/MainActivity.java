@@ -18,7 +18,7 @@ import javax.script.ScriptException;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static char type = 'b';
+    private static char type = 'd';
     private static final String LOG_TAG = MainActivity.class.getName();
     private static StringBuilder equation = new StringBuilder();
     private Spinner spTypes;
@@ -54,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
                     case 'l':
                     case 'f':
                     case 'd':
-                        type = String.valueOf(adapterView.getItemAtPosition(pos)).charAt(0);
+                        // TODO: TAKE OUT -- make dynamic
+//                        type = String.valueOf(adapterView.getItemAtPosition(pos)).charAt(0);
                         break;
                     default:
                         type = String.valueOf(adapterView.getItemAtPosition(pos)).charAt(3);
@@ -293,6 +294,10 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case 'd': //double
                     obResult = String.valueOf(Double.parseDouble(evalResult));
+                    final String dotZero = evalResult.substring(evalResult.length() - 2);
+                    Log.i(LOG_TAG, dotZero);
+                    if (dotZero.equals(".0"))
+                        obResult = evalResult.substring(0, evalResult.length() - 2);
                     Log.i(LOG_TAG, "case d used.");
                     break;
                 case 'D': // for BigDecimal ty

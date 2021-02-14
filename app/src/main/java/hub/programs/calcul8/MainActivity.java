@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = MainActivity.class.getName();
     private static StringBuilder equation = new StringBuilder();
     private Spinner spTypes;
-    private TextView tvFeedback;
+    private TextView tvFeedback, tvRes;
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         tvFeedback = (TextView) findViewById(R.id.tv_feedback);
+        tvRes = (TextView) findViewById(R.id.tv_res);
         tvFeedback.setText(equation);
         spTypes = (Spinner) findViewById(R.id.types_spin);
         setTypeSpinner();
@@ -312,8 +313,9 @@ public class MainActivity extends AppCompatActivity {
 //            tvFeedback.setText(R.string.result);
             Log.i(LOG_TAG, "obResult: " + obResult);
             tvFeedback.setText(equation);
-            tvFeedback.append("\n");
-            tvFeedback.append(obResult);
+//            tvFeedback.append("\n");
+//            tvFeedback.append(obResult);
+            tvRes.setText(obResult);
 
         } catch (NumberFormatException nfe) {
             try {
@@ -339,28 +341,36 @@ public class MainActivity extends AppCompatActivity {
     private char checkType (double doubleResult) {
         // TODO: Make conditions for BigInteger and BigDecimal
         // java.lang.NumberFormatException:
-//        if (doubleResult > 9223372036854775807.0 || doubleResult < -9223372036854775808.0) {
-//            // TODO: Find out the range for other number types including this.
+//        if (doubleResult > Long.MAX_VALUE || doubleResult < Long.MIN_VALUE) {
+////            // TODO: Find out the range for other number types including this.
 //            return 'd';
-//        } else if (doubleResult > 2147483647 || doubleResult < -2147483648) { // Value out of range for int
+//        } else if (doubleResult > Integer.MAX_VALUE || doubleResult < Integer.MIN_VALUE) { // Value out of range for int
 //            return 'l';
-//        } else if (doubleResult > 32767 || doubleResult < -32768) {// Value out of range for short
+//        } else if (doubleResult > Short.MAX_VALUE || doubleResult < Short.MIN_VALUE) {// Value out of range for short
 //            return 'i';
-//        } else if (doubleResult > 127 || doubleResult < -128) {// Value out of range for byte:
+//        } else if (doubleResult > Byte.MAX_VALUE || doubleResult < Byte.MIN_VALUE) {
 //            return 's';
 //        } else
 //            return 'b';
 
-        if (doubleResult >= -128 && doubleResult <= 127)
+        if (doubleResult >= Byte.MIN_VALUE && doubleResult <= Byte.MAX_VALUE) // -128 through 127
             return 'b';
-        else if (doubleResult >= -32768 && doubleResult <= 32767)
+        else if (doubleResult >= Short.MIN_VALUE && doubleResult <= Short.MAX_VALUE) // - 32768 through 32767
             return 's';
-        else if (doubleResult >= -2147483648 && doubleResult <= 2147483647)
+        else if (doubleResult >= Integer.MIN_VALUE && doubleResult <= Integer.MAX_VALUE) // -2147483648 through 2147483647
             return 'i';
-        else if (doubleResult >= -9223372036854775808.0 && doubleResult <= 9223372036854775807.0)
+        else if (doubleResult >= Long.MIN_VALUE && doubleResult <= Long.MAX_VALUE) // -9223372036854775808.0 through 9223372036854775807.0
             return 'l';
-        else
-            return 'D';
+        else if (doubleResult >= Float.MIN_VALUE && doubleResult <= Float.MAX_VALUE)
+            return 'f';
+        else if (doubleResult >= Double.MIN_VALUE && doubleResult <= Double.MAX_VALUE)
+            return 'd';
+        else { // when number falls into the Big_ class
+            if (String.valueOf(doubleResult).contains("."))
+                return 'I';
+            else
+                return 'D';
+        }
     }
 
 }

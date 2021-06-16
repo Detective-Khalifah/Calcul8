@@ -1,19 +1,21 @@
 package hub.programs.calcul8;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import javax.script.ScriptEngineManager;
 import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvFeedback, tvRes;
 
     @Override
-    protected void onCreate (Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setTypeSpinner();
     }
 
-    private void setTypeSpinner () {
+    private void setTypeSpinner() {
         final ArrayAdapter typeSpin = ArrayAdapter.createFromResource(this, R.array.types,
                 android.R.layout.simple_spinner_item);
         typeSpin.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
@@ -46,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         spTypes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected (AdapterView<?> adapterView, View view, int pos, long id) {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
                 switch (String.valueOf(adapterView.getItemAtPosition(pos)).charAt(0)) {
                     case 'b':
                     case 's':
@@ -63,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onNothingSelected (AdapterView<?> adapterView) {
+            public void onNothingSelected(AdapterView<?> adapterView) {
                 type = 'i';
             }
         });
@@ -74,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param view item clicked
      */
-    public void touched (View view) {
+    public void touched(View view) {
         int id = view.getId();
         switch (id) {
             case R.id.bt_deci:
@@ -146,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param btn identifier for numeric/symbol button clicked.
      */
-    private void appendChar (String btn) {
+    private void appendChar(String btn) {
         char firstChar = 'a', lastChar = 'z';
         int length = 0;
         if (equation.length() > 1) {
@@ -154,6 +156,8 @@ public class MainActivity extends AppCompatActivity {
             firstChar = equation.charAt(0);
             lastChar = equation.charAt(length);
         }
+
+
         String eq = String.valueOf(equation);
         switch (btn) {
             case "deciPoint":
@@ -240,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
      * @param theEquation String formatted equation
      */
 
-    private void displayResult (char numType, String theEquation) {
+    private void displayResult(char numType, String theEquation) {
         String obResult = null, evalResult = "0.0"; // evaluated result, to be parsed into different types.
 //        byte byteResult; short shortResult; int intResult; long longResult; float floatResult; double doubleResult;
 
@@ -338,7 +342,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private char checkType (double doubleResult) {
+    private char checkType(double doubleResult) {
         // TODO: Make conditions for BigInteger and BigDecimal
         // java.lang.NumberFormatException:
 //        if (doubleResult > Long.MAX_VALUE || doubleResult < Long.MIN_VALUE) {
